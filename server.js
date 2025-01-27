@@ -1,10 +1,15 @@
 import express from 'express'
 import path from 'path'
+import { fileURLToPath } from 'url'
 import posts from './routes/posts.js'
 import logger from './middleware/logger.js'
 import errorHandler from './middleware/error.js'
 import notFound from './middleware/notFound.js'
 const port = process.env.PORT || 8000
+
+// get the directory name
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const app = express()
 
@@ -18,7 +23,7 @@ app.use(logger)
 
 // setup static folder - declare one of our folders (public folder)
 // to be static - meaning we can just go to the url and it will work
-// app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')))
 
 // Routes
 app.use('/api/posts', posts)
