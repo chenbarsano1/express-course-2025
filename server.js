@@ -1,5 +1,7 @@
-const express = require('express')
-const path = require('path')
+import express from 'express'
+import path from 'path'
+import posts from './routes/posts.js'
+
 const port = process.env.PORT || 8000
 
 const app = express()
@@ -8,34 +10,9 @@ const app = express()
 // to be static - meaning we can just go to the url and it will work
 // app.use(express.static(path.join(__dirname, 'public')))
 
-// app.get('/', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'index.html'))
-// })
+// Routes
+app.use('/api/posts', posts)
 
-// app.get('/about', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'about.html'))
-// })
 
-let posts = [
-    {id: 1, title: 'Post 1'},
-    {id: 2, title: 'Post 2'},
-    {id: 3, title: 'Post 3'}
-]
-
-// get all posts
-app.get('/api/posts', (req, res) => {
-    const limit = parseInt(req.query.limit)
-    if (!isNaN(limit) && limit > 0) {
-        res.json(posts.slice(0, limit))
-    } else {
-        res.json(posts)
-    }
-})
-
-// get single post
-app.get('/api/posts/:id', (req, res) => {
-    const id = parseInt(req.params.id)
-    res.json(posts.filter((post) => post.id === id))
-})
 
 app.listen(port, () => console.log(`Server is running on port ${port}`))
